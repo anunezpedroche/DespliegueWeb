@@ -4,56 +4,91 @@ import javax.servlet.http.*;
 import java.sql.*;
 
 public class MiServlet extends HttpServlet {
-    public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws ServletException, IOException {
+
+    public void doPost(HttpServletRequest peticion, HttpServletResponse respuesta)
+            throws ServletException, IOException {
+
         respuesta.setContentType("text/html");
         PrintWriter salida = respuesta.getWriter();
-        String titulo = "Conexión JDBC a MySQL";
-        salida.println("<TITLE>"+titulo+"</TITLE>\n");
-        salida.println("<BODY BGCOLOR=\"#FDF5E6\">");
-        salida.println("<H1 ALIGN=CENTER>"+titulo+"</H1>\n\n");
+        String titulo = "Jorge 10.21 Conexión JDBC a MySQL";
+        salida.println("<TITLE>" + titulo + "</TITLE>\n");
+        salida.println("<BODY BGCOLOR=\"#FDF5E6\">\n");
+        salida.println("<H1 ALIGN=CENTER>Añadir nuevo empleado</H1>\n\n");
+        salida.println("<FORM ACTION='/Proyecto1/Jorge_10.21' METHOD='POST'>");
+        salida.println("DNI");
+        salida.println("<INPUT TYPE='number' NAME='DNI'><BR>");
+        salida.println("Nombre");
+        salida.println("<INPUT TYPE='text' NAME='nombre'><BR>");
+        salida.println("Sueldo");
+        salida.println("<INPUT TYPE='number' NAME='sueldo'><BR>");
+        salida.println("Plus");
+        salida.println("<INPUT TYPE='number' NAME='plus'><BR>");
+        salida.println("<CENTER>");
+        salida.println("<INPUT TYPE='SUBMIT'>");
+        salida.println("</CENTER>");
+        salida.println("</FORM>");
+        salida.println("<BR><BR>");
 
-        try{
+        try {
             DriverManager.registerDriver(new org.gjt.mm.mysql.Driver());
-            String SourceURL = "jdbc:mysql://127.0.0.1:3306/bdprueba";
+            String SourceURL = "jdbc:mysql://192.168.4.65:3306/bdprueba";
             String user = "miusuario";
             String password = "mipassword";
 
-            Connection miconexion;
-            miconexion = DriverManager.getConnection(SourceURL,user,password);
-
-            String dni = peticion.getParameter("dni");
+            int dni = Integer.parseInt(peticion.getParameter("DNI"));
             String nombre = peticion.getParameter("nombre");
-            String sueldo = peticion.getParameter("sueldo");
+            int sueldo = Integer.parseInt(peticion.getParameter("sueldo"));
+            int plus = Integer.parseInt(peticion.getParameter("plus"));
 
-            salida.println("<form action='servlet'><br>"
-            +"<input type='number' value=0 min=0 name='dni' max=9999999999><br>"
-            +"<input type='text' name='nombre'><br>"
-            +"<input type='text' name='sueldo'><br>"
-            +"<input type='submit' name='enviar'><br>"+"</form>"
-            );
+            Connection miconexion;
+            miconexion = DriverManager.getConnection(SourceURL, user, password);
 
-            if(!dni.equals(0)){
-                Statement misentencia;
-                Statement miinsert;
-                ResultSet misresultados;
+            Statement misentencia;
+            ResultSet misresultados;
+            misentencia = miconexion.createStatement();
+            misentencia.executeUpdate(
+                    "INSERT INTO empleados values(" + dni + ", '" + nombre + "', " + sueldo + ", " + plus + " );");
+            misresultados = misentencia.executeQuery("SELECT * FROM empleados where dni = " + dni + ";");
 
-                miinsert = miconexion.createStatement();
-                miinsert.executeUpdate("INSERT INTO empleados(dni,nombre,sueldo) VALUES("+dni+","+nombre+","+sueldo+")");
-                misentencia = miconexion.createStatement();
-                misresultados = misentencia.executeQuery("SELECT nombre,sueldo FROM empleados WHERE dni="+dni+"");
+            salida.println("<TABLE BORDER=1 ALIGN=CENTER>\n" + "<TR BGCOLOR=\"#FFAD00\">\n"
+                    + "<TH>DNI<TH>Nombre<TH>Sueldo<TH>PLus");
 
-                salida.println("<TABLE BORDER=1 ALIGN=CENTER>\n"+
-                "<TR BGCOLOR=\"#FFAD00\">\n"+"<TH>Nombre<TH>Sueldo");
-                while(misresultados.next()) {salida.println("<TR><TD>"+
-                misresultados.getString("nombre")+"\n<TD>"+
-                misresultados.getFloat("sueldo"));
-                }
-                salida.println("</TABLE></BODY></HTML>");
+            while (misresultados.next()) {
+                salida.println("<TR><TD>" + misresultados.getString("DNI") + "\n<TD>"
+                        + misresultados.getString("nombre") + "\n<TD>" + misresultados.getString("sueldo") + "\n<TD>"
+                        + misresultados.getFloat("plus"));
             }
+            salida.println("</TABLE></BODY></HTML>");
             miconexion.close();
-        }catch(SQLException sqle){
+        } catch (SQLException sqle) {
             salida.println(sqle);
             salida.println("</BODY></HTML>");
         }
     }
+
+    public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws ServletException, IOException {
+
+        respuesta.setContentType("text/html");
+        PrintWriter salida = respuesta.getWriter();
+        String titulo = "Jorge 10.19 Conexión JDBC a MySQL";
+        salida.println("<TITLE>" + titulo + "</TITLE>\n");
+        salida.println("<BODY BGCOLOR=\"#FDF5E6\">\n");
+        salida.println("<H1 ALIGN=CENTER>Añadir nuevo empleado</H1>\n\n");
+        salida.println("<FORM ACTION='/Proyecto1/Jorge_10.21' METHOD='POST'>");
+        salida.println("DNI");
+        salida.println("<INPUT TYPE='number' NAME='DNI'><BR>");
+        salida.println("Nombre");
+        salida.println("<INPUT TYPE='text' NAME='nombre'><BR>");
+        salida.println("Sueldo");
+        salida.println("<INPUT TYPE='number' NAME='sueldo'><BR>");
+        salida.println("Plus");
+        salida.println("<INPUT TYPE='number' NAME='plus'><BR>");
+        salida.println("<CENTER>");
+        salida.println("<INPUT TYPE='SUBMIT'>");
+        salida.println("</CENTER>");
+        salida.println("</FORM>");
+        salida.println("</TABLE></BODY></HTML>");
+
+    }
+
 }
