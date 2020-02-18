@@ -1,0 +1,39 @@
+<web-app>
+     <servlet>
+         <servlet-name>Ejercicio10_27_principal</servlet-name>
+         <servlet-class>E10_27_principal</servlet-class>
+      </servlet>
+     <servlet-mapping>
+         <servlet-name>Ejercicio10_27_principal</servlet-name>
+         <url-pattern>/E10.27_principal</url-pattern>
+     </servlet-mapping>
+
+
+     <servlet>
+         <servlet-name>Ejercicio10_27_envio</servlet-name>
+         <servlet-class>E10_27_envio</servlet-class>
+      </servlet>
+     <servlet-mapping>
+         <servlet-name>Ejercicio10_27_envio</servlet-name>
+         <url-pattern>/E10.27_envio</url-pattern>
+     </servlet-mapping>
+
+
+     <servlet>
+         <servlet-name>Ejercicio10_27_vendedor</servlet-name>
+         <servlet-class>E10_27_vendedor</servlet-class>
+      </servlet>
+     <servlet-mapping>
+         <servlet-name>Ejercicio10_27_vendedor</servlet-name>
+         <url-pattern>/E10.27_vendedor</url-pattern>
+     </servlet-mapping>
+
+     <servlet>
+         <servlet-name>Ejercicio10_27_compras</servlet-name>
+         <servlet-class>E10_27_compras</servlet-class>
+      </servlet>
+     <servlet-mapping>
+         <servlet-name>Ejercicio10_27_compras</servlet-name>
+         <url-pattern>/E10.27_compras</url-pattern>
+     </servlet-mapping>
+</web-app>
